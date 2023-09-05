@@ -6,6 +6,7 @@ on:
 env:
   docker_username: ${{ github.actor }}
   docker_password: ${{ secrets.GITHUB_TOKEN }}
+  git_commit: ${{ github.sha }}
 
 jobs:
   push-to-ghcr:
@@ -18,6 +19,7 @@ jobs:
       - name: Build the container
         run: |
           echo -e 'FROM alpine:latest\nENTRYPOINT ["echo", "Commit:", "'$(git rev-parse --short HEAD)'"]' >Dockerfile
+          echo -e 'FROM alpine:latest\nENTRYPOINT ["echo", "Commit:", "'$git_commit'"]' >Dockerfile
           cat Dockerfile
           docker build -t "ghcr.io/$docker_username/gh-actions-commit:latest" .
       - name: Login to GHCR
