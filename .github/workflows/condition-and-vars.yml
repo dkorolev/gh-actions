@@ -1,0 +1,27 @@
+name: Conditions and Variables
+
+on:
+  workflow_dispatch:
+    inputs:
+      input_foo:
+        description: 'To foo or not to foo'
+        required: true
+        default: 'meh'
+
+jobs:
+  conditions-and-vars:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print Var
+        run: echo "input_foo: ${{ github.event.inputs.input_foo }}"
+      - name: Set Var
+        id: set_var
+        run: echo "myvar=${{ github.event.inputs.input_foo }}" >> "$GITHUB_OUTPUT"
+      - name: Get Var
+        run: echo "myvar=${{ steps.set_var.myvar }}"
+      - name: 'If myvar is "foo"'
+        if: steps.set_var.myvar == "foo"
+        run: echo "It is indeed foo."
+      - name: 'If myvar is not "foo"'
+        if: steps.set_var.myvar != "foo"
+        run: echo "It is nowhere near foo."
