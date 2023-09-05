@@ -22,9 +22,9 @@ jobs:
         run: echo "myvar=${{ github.event.inputs.input_foo }}" >> "$GITHUB_STATE"
       - name: Get Var
         run: echo "myvar=${{ steps.set_var.outputs.myvar }}"
-      - name: 'If myvar is "foo"'
-        if: ${{ steps.set_var.outputs.myvar == "foo" }}
-        run: echo "It is indeed foo."
-      - name: 'If myvar is not "foo"'
-        if: ${{ steps.set_var.outputs.myvar != "foo" }}
-        run: echo "It is nowhere near foo."
+      #- name: 'If myvar is "foo"'
+      #  if: ${{ steps.set_var.outputs.myvar == "foo" }}
+      #  run: echo "It is indeed foo."
+      #- name: 'If myvar is not "foo"'
+      #  if: ${{ steps.set_var.outputs.myvar != "foo" }}
+      #  run: echo "It is nowhere near foo."
