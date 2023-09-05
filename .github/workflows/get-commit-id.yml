@@ -5,7 +5,7 @@ on:
 
 jobs:
   get-commit-hash:
-    runs-on: [self-hosted, linux, amd64]
+    runs-on: [self-hosted, linux] # , amd64]
     steps:
       - name: Info
         run: uname -a
