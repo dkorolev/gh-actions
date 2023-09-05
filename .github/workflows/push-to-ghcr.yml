@@ -1,0 +1,26 @@
+name: Push to GHCR
+
+on:
+  workflow_dispatch:
+
+env:
+  docker_username: ${{ github.actor }}
+  docker_password: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+  push-to-ghcr:
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+    steps:
+      - name: Clone
+        uses: actions/checkout@v3
+      - name: Build the container
+        run: |
+          echo -e 'FROM alpine:latest\nENTRYPOINT ["echo", "Commit:", "'$(git rev-parse --short HEAD)'"]' >Dockerfile
+          cat Dockerfile
+          docker build -t "ghcr.io/$docker_username/gh-actions-commit:latest" .
+      - name: Login to GHCR
+        run: echo "$docker_password" | docker login ghcr.io --username "$docker_username" --password-stdin
+      - name: Push to GHCR
+        run: docker push "ghcr.io/$docker_username/gh-actions-commit:latest"
