@@ -19,7 +19,7 @@ jobs:
           echo "input_foo: ${{ github.event.inputs.input_foo }}"
       - name: Set Var
         id: set_var
-        run: echo "myvar=${{ github.event.inputs.input_foo }}" >> "$GITHUB_STATE"
+        run: echo "myvar=${{ github.event.inputs.input_foo }}" >> "$GITHUB_OUTPUT"
       - name: Get Var
         run: echo "myvar=${{ steps.set_var.outputs.myvar }}"
       #- name: 'If myvar is "foo"'
