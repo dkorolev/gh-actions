@@ -21,7 +21,7 @@ jobs:
         id: set_var
         run: |
           echo "myvar=${{ github.event.inputs.input_foo }}" >> "$GITHUB_OUTPUT"
-          [ "${{ github.event.inputs.input_foo }" == "foo" ] && echo "myvar2=true }}" >> "$GITHUB_OUTPUT"
+          [ "${{ github.event.inputs.input_foo }}" == "foo" ] && echo "myvar2=true }}" >> "$GITHUB_OUTPUT"
       - name: Get Var
         run: echo "myvar=${{ steps.set_var.outputs.myvar }}"
         run: echo "myvar=${{ steps.set_var.outputs.myvar2 }}"
