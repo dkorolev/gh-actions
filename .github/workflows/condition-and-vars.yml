@@ -12,6 +12,8 @@ jobs:
   conditions-and-vars:
     runs-on: ubuntu-latest
     steps:
+      - name: Print Blah
+        run: echo blah
       - name: Print Var
         run: echo "input_foo: ${{ github.events.inputs.input_foo }}"
       - name: Set Var
