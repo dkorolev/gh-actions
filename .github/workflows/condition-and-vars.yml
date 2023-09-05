@@ -5,7 +5,7 @@ on:
     inputs:
       input_foo:
         description: 'To foo or not to foo'
-        required: true
+#        required: true
         default: 'meh'
 
 jobs:
@@ -19,12 +19,21 @@ jobs:
           echo "input_foo: ${{ github.event.inputs.input_foo }}"
       - name: Set Var
         id: set_var
-        run: echo "myvar=${{ github.event.inputs.input_foo }}" >> "$GITHUB_OUTPUT"
+        run: |
+          echo "myvar=${{ github.event.inputs.input_foo }}" >> "$GITHUB_OUTPUT"
+          [ "${{ github.event.inputs.input_foo }" == "foo" ] && echo "myvar2=true }}" >> "$GITHUB_OUTPUT"
       - name: Get Var
         run: echo "myvar=${{ steps.set_var.outputs.myvar }}"
+        run: echo "myvar=${{ steps.set_var.outputs.myvar2 }}"
       - name: 'If myvar is "foo"'
         if: ${{ steps.set_var.outputs.myvar == 'foo' }}
         run: echo "It is indeed foo."
       - name: 'If myvar is not "foo"'
         if: ${{ steps.set_var.outputs.myvar != 'foo' }}
+        run: echo "It is nowhere near foo."
+      - name: 'If myvar2"'
+        if: ${{ steps.set_var.outputs.myvar2 }}
+        run: echo "It is indeed foo."
+      - name: 'If not myvar2'
+        if: ${{ ! steps.set_var.outputs.myvar2 }}
         run: echo "It is nowhere near foo."
