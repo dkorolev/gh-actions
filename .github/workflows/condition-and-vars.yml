@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Print Var
-        run: echo "input_foo: ${{ github.event.inputs.input_foo }}"
+        run: echo "input_foo: ${{ github.events.inputs.input_foo }}"
       - name: Set Var
         id: set_var
         run: echo "myvar=${{ github.event.inputs.input_foo }}" >> "$GITHUB_OUTPUT"
