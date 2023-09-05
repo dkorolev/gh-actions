@@ -1,0 +1,17 @@
+name: Get Commit ID
+
+on:
+  workflow_dispatch:
+
+jobs:
+  get-commit-hash:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clone
+        uses: actions/checkout@v3
+      - name: Get commit ID
+        id: commits
+        run: |
+          git rev-parse --short HEAD  # NOTE(dkorolev): This may not work from a PR-based run.
+                                      # Need to test all three: Manual, open PR, push to PR.
