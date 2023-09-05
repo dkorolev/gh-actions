@@ -6,7 +6,7 @@ on:
 env:
   docker_username: ${{ github.actor }}
   docker_password: ${{ secrets.GITHUB_TOKEN }}
-  git_commit: ${{ github.sha }}
+  git_commit: ${{ github.sha }}  # NOTE(dkorolev): This will not do what it should for PR-based action triggers!
 
 jobs:
   push-to-ghcr:
@@ -18,11 +18,13 @@ jobs:
         uses: actions/checkout@v3
       - name: Build the container
         run: |
-          echo -e 'FROM alpine:latest\nENTRYPOINT ["echo", "Commit:", "'$(git rev-parse --short HEAD)'"]' >Dockerfile
-          echo -e 'FROM alpine:latest\nENTRYPOINT ["echo", "Commit:", "'$git_commit'"]' >Dockerfile
+          echo -e 'FROM alpine:latest\nENTRYPOINT ["echo", "Commit:", "'${git_commit:0:6}'"]' >Dockerfile
           cat Dockerfile
           docker build -t "ghcr.io/$docker_username/gh-actions-commit:latest" .
       - name: Login to GHCR
         run: echo "$docker_password" | docker login ghcr.io --username "$docker_username" --password-stdin
       - name: Push to GHCR
-        run: docker push "ghcr.io/$docker_username/gh-actions-commit:latest"
+        run: |
+          docker push "ghcr.io/$docker_username/gh-actions-commit:latest"
+          docker tag "ghcr.io/$docker_username/gh-actions-commit:latest" "ghcr.io/$docker_username/gh-actions-commit:${git_commit:0:6}"
+          docker push "ghcr.io/$docker_username/gh-actions-commit:${git_commit:0:6}"
